@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx lefthook install)",
+      "Bash(npm run test:run)",
+      "Bash(npm run lint)",
+      "Bash(npx biome check --write src)",
+      "Bash(node -e \"const v = require\\(''/Users/kadoblog/_git.me/react-fire-work-app/node_modules/vitest/package.json''\\); console.log\\(v.version\\)\")"
+    ]
+  }
+}
