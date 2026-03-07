@@ -209,9 +209,9 @@ tests/
 
 ### Step 2 — ルーティング基盤
 
-- [ ] `App.tsx` に React Router のルート定義（`/` / `/karaoke` / `/history`）
-- [ ] 各 Page コンポーネントのスケルトン作成
-- [ ] ページ間のナビゲーション（`useNavigate`）
+- [x] `App.tsx` に React Router のルート定義（`/` / `/karaoke` / `/history`）
+- [x] 各 Page コンポーネントのスケルトン作成
+- [x] ページ間のナビゲーション（`useNavigate`）
 
 ### Step 3 — 曲選択画面
 
