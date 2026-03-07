@@ -10,7 +10,8 @@
 		"lint": "biome check .",
 		"format": "biome format --write .",
 		"test": "vitest",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"prepare": "lefthook install"
 	},
 	"lint-staged": {
 		"*.{ts,tsx,js,jsx,json}": [
