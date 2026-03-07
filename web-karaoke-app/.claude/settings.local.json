@@ -1,0 +1,22 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(npm create vite@latest . -- --template react-ts)",
+			"Read(//private/tmp/**)",
+			"Bash(npm create vite@latest web-karaoke-tmp -- --template react-ts)",
+			"Bash(npx biome init)",
+			"Bash(npx biome migrate eslint --write)",
+			"Bash(npm uninstall eslint @eslint/js eslint-plugin-react-hooks eslint-plugin-react-refresh typescript-eslint)",
+			"Bash(npx lefthook install)",
+			"Bash(npx playwright install --with-deps chromium)",
+			"Bash(npx playwright install chromium)",
+			"Bash(npx playwright init)",
+			"Bash(npx biome check .)",
+			"Bash(npx biome check --write .)",
+			"Bash(git -C /Users/kadoblog/_git.me/wakuwaku/web-karaoke-app log --oneline)",
+			"Bash(git -C /Users/kadoblog/_git.me/wakuwaku/web-karaoke-app show fa33882:README.md)",
+			"Bash(git -C /Users/kadoblog/_git.me/wakuwaku/web-karaoke-app show f26e671 --stat)",
+			"Bash(git -C /Users/kadoblog/_git.me/wakuwaku show fa33882:web-karaoke-app/README.md)"
+		]
+	}
+}
