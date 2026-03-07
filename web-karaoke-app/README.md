@@ -198,14 +198,14 @@ tests/
 
 ### Step 1 — プロジェクトセットアップ
 
-- [ ] `npm create vite@latest` で React 19 + TypeScript 構成
-- [ ] React Router v7 導入
-- [ ] Tailwind CSS 導入
-- [ ] Biome 導入（`npm install --save-dev @biomejs/biome` → `npx biome init`）
-- [ ] Lefthook + lint-staged 導入
-- [ ] Vitest + @testing-library/react 導入
-- [ ] Playwright 導入（`npx playwright install`）
-- [ ] `.vscode/` 設定
+- [x] `npm create vite@latest` で React 19 + TypeScript 構成
+- [x] React Router v7 導入
+- [x] Tailwind CSS 導入
+- [x] Biome 導入（`npm install --save-dev @biomejs/biome` → `npx biome init`）
+- [x] Lefthook + lint-staged 導入
+- [x] Vitest + @testing-library/react 導入
+- [x] Playwright 導入（`npx playwright install`）
+- [x] `.vscode/` 設定
 
 ### Step 2 — ルーティング基盤
 
