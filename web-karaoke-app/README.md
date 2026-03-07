@@ -215,10 +215,10 @@ tests/
 
 ### Step 3 — 曲選択画面
 
-- [ ] `FileLoader` コンポーネント（ドラッグ&ドロップ + ファイルピッカー）
-- [ ] `lrcParser` で LRC ファイルを `{ time: number; text: string }[]` に変換
-- [ ] 選択した曲情報を state / sessionStorage 経由でカラオケ画面へ渡す
-- [ ] `RecentSongList`（localStorage から最近歌った曲を表示）
+- [x] `FileLoader` コンポーネント（ドラッグ&ドロップ + ファイルピッカー）
+- [x] `lrcParser` で LRC ファイルを `{ time: number; text: string }[]` に変換
+- [x] 選択した曲情報を state / sessionStorage 経由でカラオケ画面へ渡す
+- [x] `RecentSongList`（localStorage から最近歌った曲を表示）
 
 ### Step 4 — 再生コントロール
 
