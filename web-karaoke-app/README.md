@@ -222,9 +222,9 @@ tests/
 
 ### Step 4 — 再生コントロール
 
-- [ ] `usePlayer` フック（再生・一時停止・停止・シーク）
-- [ ] シークバーと時間表示
-- [ ] `requestAnimationFrame` で再生位置を継続取得
+- [x] `usePlayer` フック（再生・一時停止・停止・シーク）
+- [x] シークバーと時間表示
+- [x] `requestAnimationFrame` で再生位置を継続取得
 
 ### Step 5 — 歌詞シンク表示
 
