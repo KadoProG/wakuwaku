@@ -133,13 +133,13 @@ tests/
 ## 実装ステップ
 
 ### Step 1 — プロジェクトセットアップ
-- [ ] `npm create vite@latest` で React 19 + TypeScript 構成
-- [ ] Tailwind CSS 導入
-- [ ] Biome 導入（`npm install --save-dev @biomejs/biome` → `npx biome init`）
-- [ ] Lefthook + lint-staged 導入
-- [ ] Vitest + @testing-library/react 導入
-- [ ] Playwright 導入
-- [ ] `.vscode/` 設定
+- [x] `npm create vite@latest` で React 19 + TypeScript 構成
+- [x] Tailwind CSS 導入
+- [x] Biome 導入（`npm install --save-dev @biomejs/biome` → `npx biome init`）
+- [x] Lefthook + lint-staged 導入
+- [x] Vitest + @testing-library/react 導入
+- [x] Playwright 導入
+- [x] `.vscode/` 設定
 
 ### Step 2 — キーボードデータ・シャッフル
 - [ ] `keyboard.ts` — QWERTY 配列を定数で定義（`{ key, row, correctIndex }[]`）
