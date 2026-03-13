@@ -142,9 +142,9 @@ tests/
 - [x] `.vscode/` 設定
 
 ### Step 2 — キーボードデータ・シャッフル
-- [ ] `keyboard.ts` — QWERTY 配列を定数で定義（`{ key, row, correctIndex }[]`）
-- [ ] `shuffle()` — 難易度別のシャッフルロジック（Easy / Normal / Hard）
-- [ ] シャッフル結果が解ける状態（ちゃんとスワップ可能）であることを保証
+- [x] `keyboard.ts` — QWERTY 配列を定数で定義（`{ key, row, correctIndex }[]`）
+- [x] `shuffle()` — 難易度別のシャッフルロジック（Easy / Normal / Hard）
+- [x] シャッフル結果が解ける状態（ちゃんとスワップ可能）であることを保証
 
 ### Step 3 — キーボード表示
 - [ ] `Keyboard.tsx` — 3段レイアウト（QWERTYUIOP / ASDFGHJKL / ZXCVBNM）
