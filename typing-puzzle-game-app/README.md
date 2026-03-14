@@ -152,9 +152,9 @@ tests/
 - [x] シャッフル後のランダム配置を初期状態として描画
 
 ### Step 4 — ドラッグ＆ドロップ
-- [ ] `useDragDrop.ts` — `onDragStart` / `onDragOver` / `onDrop` のハンドラー管理
-- [ ] ドロップ時に 2 キーの位置を swap
-- [ ] ドラッグ中キーのゴースト表示（`opacity: 0.4`）
+- [x] `useDragDrop.ts` — `onDragStart` / `onDragOver` / `onDrop` のハンドラー管理
+- [x] ドロップ時に 2 キーの位置を swap
+- [x] ドラッグ中キーのゴースト表示（`opacity: 0.4`）
 
 ### Step 5 — 正誤判定・クリア
 - [ ] `usePuzzle.ts` — swap 後に全キーの正誤チェック
