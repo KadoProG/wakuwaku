@@ -10,6 +10,7 @@ export interface MicrophoneControls {
 	toggleMic: () => Promise<void>;
 	setMicVolume: (v: number) => void;
 	setEchoStrength: (v: number) => void;
+	getAnalyserNode: () => AnalyserNode | null;
 }
 
 export function useMicrophone(): MicrophoneState & MicrophoneControls {
@@ -21,6 +22,7 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 	const streamRef = useRef<MediaStream | null>(null);
 	const gainNodeRef = useRef<GainNode | null>(null);
 	const echoGainRef = useRef<GainNode | null>(null);
+	const analyserNodeRef = useRef<AnalyserNode | null>(null);
 
 	const stopMic = useCallback(() => {
 		if (streamRef.current) {
@@ -35,6 +37,7 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 		}
 		gainNodeRef.current = null;
 		echoGainRef.current = null;
+		analyserNodeRef.current = null;
 		setMicEnabled(false);
 	}, []);
 
@@ -51,6 +54,11 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 
 				const source = ctx.createMediaStreamSource(stream);
 
+				// AnalyserNode: ピッチ検出用
+				const analyser = ctx.createAnalyser();
+				analyser.fftSize = 2048;
+				analyserNodeRef.current = analyser;
+
 				// GainNode: マイク音量調整
 				const gainNode = ctx.createGain();
 				gainNode.gain.value = currentMicVolume;
@@ -66,10 +74,11 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 				echoGainRef.current = echoGain;
 
 				// パイプライン構成:
-				// source → gainNode → destination (ドライ信号)
+				// source → analyser → gainNode → destination (ドライ信号)
 				// gainNode → delayNode → echoGain → destination (エコー信号)
 				// echoGain → delayNode (フィードバックループ)
-				source.connect(gainNode);
+				source.connect(analyser);
+				analyser.connect(gainNode);
 				gainNode.connect(ctx.destination);
 				gainNode.connect(delayNode);
 				delayNode.connect(echoGain);
@@ -106,6 +115,8 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 		}
 	}, []);
 
+	const getAnalyserNode = useCallback(() => analyserNodeRef.current, []);
+
 	// アンマウント時にマイクを停止
 	useEffect(() => {
 		return () => {
@@ -120,5 +131,6 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 		toggleMic,
 		setMicVolume,
 		setEchoStrength,
+		getAnalyserNode,
 	};
 }

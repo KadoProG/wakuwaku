@@ -240,10 +240,10 @@ tests/
 
 ### Step 7 — ピッチ検出・採点・結果保存
 
-- [ ] `pitchDetector` で AnalyserNode の time-domain データから autocorrelation によるピッチ算出
-- [ ] `useScore` で歌唱ピッチと目標ピッチを比較しスコア蓄積
-- [ ] 曲終了後に `ScorePopup` でスコアと折れ線グラフを表示
-- [ ] `historyStorage` で結果を localStorage に保存し `/history` へ遷移
+- [x] `pitchDetector` で AnalyserNode の time-domain データから autocorrelation によるピッチ算出
+- [x] `useScore` で歌唱ピッチと目標ピッチを比較しスコア蓄積
+- [x] 曲終了後に `ScorePopup` でスコアと折れ線グラフを表示
+- [x] `historyStorage` で結果を localStorage に保存し `/history` へ遷移
 
 ### Step 8 — 採点履歴画面
 

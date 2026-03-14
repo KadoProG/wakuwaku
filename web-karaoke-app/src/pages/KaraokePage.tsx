@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ControlPanel } from "../components/ControlPanel";
 import { LyricsDisplay } from "../components/LyricsDisplay";
+import { ScorePopup } from "../components/ScorePopup";
 import { useLyricsSync } from "../hooks/useLyricsSync";
 import { useMicrophone } from "../hooks/useMicrophone";
 import { usePlayer } from "../hooks/usePlayer";
+import { useScore } from "../hooks/useScore";
+import { addHistory } from "../lib/historyStorage";
 import { getCurrentSong } from "../lib/songStore";
 
 export function KaraokePage() {
@@ -13,12 +16,46 @@ export function KaraokePage() {
 	const player = usePlayer(song?.audioFile ?? null);
 	const currentIndex = useLyricsSync(song?.lrcLines ?? [], player.currentTime);
 	const mic = useMicrophone();
+	const score = useScore(mic.getAnalyserNode, player.isPlaying, player.currentTime);
+
+	const [showPopup, setShowPopup] = useState(false);
+	const savedRef = useRef(false);
 
 	useEffect(() => {
 		if (!song) {
 			navigate("/", { replace: true });
 		}
 	}, [song, navigate]);
+
+	// 曲終了を検出してポップアップ表示 & 履歴保存
+	useEffect(() => {
+		if (
+			!showPopup &&
+			!savedRef.current &&
+			player.duration > 0 &&
+			player.currentTime >= player.duration &&
+			!player.isPlaying
+		) {
+			savedRef.current = true;
+			addHistory({
+				title: song?.title ?? "Unknown",
+				artist: song?.artist ?? "",
+				score: score.score,
+			});
+			setShowPopup(true);
+		}
+	}, [player.isPlaying, player.currentTime, player.duration, showPopup, score.score, song]);
+
+	const handleRetry = useCallback(() => {
+		setShowPopup(false);
+		savedRef.current = false;
+		score.resetScore();
+		player.stop();
+	}, [score, player]);
+
+	const handleHistory = useCallback(() => {
+		navigate("/history");
+	}, [navigate]);
 
 	if (!song) return null;
 
@@ -48,6 +85,16 @@ export function KaraokePage() {
 			<div className="flex justify-center px-4 pb-8">
 				<ControlPanel {...player} {...mic} />
 			</div>
+
+			{/* Score Popup */}
+			{showPopup && (
+				<ScorePopup
+					score={score.score}
+					pitchData={score.pitchData}
+					onRetry={handleRetry}
+					onHistory={handleHistory}
+				/>
+			)}
 		</div>
 	);
 }
