@@ -167,9 +167,9 @@ tests/
 - [x] `score.ts` — localStorage にベストタイム・ベスト手数を保存・読み出し
 
 ### Step 7 — UI・クリア演出
-- [ ] `StatusBar.tsx` — タイム・手数・ベスト記録の常時表示
-- [ ] `ClearScreen.tsx` — クリアタイム・手数・ベスト更新有無を表示
-- [ ] `ConfettiEffect.tsx` — 紙吹雪アニメーション（CSS keyframes）
+- [x] `StatusBar.tsx` — タイム・手数・ベスト記録の常時表示
+- [x] `ClearScreen.tsx` — クリアタイム・手数・ベスト更新有無を表示
+- [x] `ConfettiEffect.tsx` — 紙吹雪アニメーション（CSS keyframes）
 
 ### Step 8 — 仕上げ
 - [ ] 難易度セレクター UI
