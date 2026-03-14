@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ControlPanel } from "../components/ControlPanel";
+import { LyricsDisplay } from "../components/LyricsDisplay";
+import { useLyricsSync } from "../hooks/useLyricsSync";
 import { usePlayer } from "../hooks/usePlayer";
 import { getCurrentSong } from "../lib/songStore";
 
@@ -8,6 +10,7 @@ export function KaraokePage() {
 	const navigate = useNavigate();
 	const song = getCurrentSong();
 	const player = usePlayer(song?.audioFile ?? null);
+	const currentIndex = useLyricsSync(song?.lrcLines ?? [], player.currentTime);
 
 	useEffect(() => {
 		if (!song) {
@@ -36,10 +39,8 @@ export function KaraokePage() {
 				</button>
 			</div>
 
-			{/* Lyrics area (Step 5 以降で実装) */}
-			<div className="flex-1 flex items-center justify-center">
-				<p className="text-gray-500 text-sm">（歌詞表示は Step 5 で実装）</p>
-			</div>
+			{/* Lyrics */}
+			<LyricsDisplay lines={song.lrcLines} currentIndex={currentIndex} />
 
 			{/* Controls */}
 			<div className="flex justify-center px-4 pb-8">
