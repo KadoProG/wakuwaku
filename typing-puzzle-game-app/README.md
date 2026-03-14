@@ -172,10 +172,10 @@ tests/
 - [x] `ConfettiEffect.tsx` — 紙吹雪アニメーション（CSS keyframes）
 
 ### Step 8 — 仕上げ
-- [ ] 難易度セレクター UI
-- [ ] シャッフルボタン（現在の難易度で再チャレンジ）
-- [ ] スライドアニメーション（swap 時の CSS transition）
-- [ ] モバイル対応（touch イベント fallback）
+- [x] 難易度セレクター UI
+- [x] シャッフルボタン（現在の難易度で再チャレンジ）
+- [x] スライドアニメーション（swap 時の CSS transition）
+- [x] モバイル対応（touch イベント fallback）
 
 ---
 
