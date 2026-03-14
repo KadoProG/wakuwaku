@@ -147,9 +147,9 @@ tests/
 - [x] シャッフル結果が解ける状態（ちゃんとスワップ可能）であることを保証
 
 ### Step 3 — キーボード表示
-- [ ] `Keyboard.tsx` — 3段レイアウト（QWERTYUIOP / ASDFGHJKL / ZXCVBNM）
-- [ ] `KeyTile.tsx` — キーの表示と `correct` / `default` / `dragging` の状態スタイル
-- [ ] シャッフル後のランダム配置を初期状態として描画
+- [x] `Keyboard.tsx` — 3段レイアウト（QWERTYUIOP / ASDFGHJKL / ZXCVBNM）
+- [x] `KeyTile.tsx` — キーの表示と `correct` / `default` / `dragging` の状態スタイル
+- [x] シャッフル後のランダム配置を初期状態として描画
 
 ### Step 4 — ドラッグ＆ドロップ
 - [ ] `useDragDrop.ts` — `onDragStart` / `onDragOver` / `onDrop` のハンドラー管理
