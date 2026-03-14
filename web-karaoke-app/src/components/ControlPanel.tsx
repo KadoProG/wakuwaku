@@ -7,6 +7,14 @@ function formatTime(seconds: number): string {
 	return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+function buildRecordingFilename(): string {
+	const now = new Date();
+	const pad = (n: number) => String(n).padStart(2, "0");
+	const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+	const time = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+	return `recording_${date}_${time}.webm`;
+}
+
 type Props = PlayerState & PlayerControls & MicrophoneState & MicrophoneControls;
 
 export function ControlPanel({
@@ -20,9 +28,14 @@ export function ControlPanel({
 	micEnabled,
 	micVolume,
 	echoStrength,
+	isRecording,
+	recordingUrl,
 	toggleMic,
 	setMicVolume,
 	setEchoStrength,
+	startRecording,
+	stopRecording,
+	clearRecording,
 }: Props) {
 	return (
 		<div className="w-full max-w-2xl flex flex-col gap-4 p-4 bg-gray-800 rounded-xl">
@@ -133,6 +146,50 @@ export function ControlPanel({
 					</span>
 				</div>
 			</div>
+
+			{/* Recording controls */}
+			{micEnabled && (
+				<div className="flex items-center gap-3 pt-2 border-t border-gray-700">
+					{isRecording ? (
+						<button
+							type="button"
+							onClick={stopRecording}
+							className="px-4 py-2 rounded-lg text-sm font-medium bg-red-600 hover:bg-red-700 text-white animate-pulse"
+							aria-label="録音停止"
+						>
+							● 録音中
+						</button>
+					) : (
+						<button
+							type="button"
+							onClick={startRecording}
+							className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-600 hover:bg-gray-500 text-gray-200"
+							aria-label="録音開始"
+						>
+							録音開始
+						</button>
+					)}
+					{recordingUrl && (
+						<>
+							<a
+								href={recordingUrl}
+								download={buildRecordingFilename()}
+								className="px-4 py-2 rounded-lg text-sm font-medium bg-green-700 hover:bg-green-600 text-white"
+							>
+								ダウンロード
+							</a>
+							<button
+								type="button"
+								onClick={clearRecording}
+								className="px-2 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-gray-700"
+								aria-label="録音を削除"
+							>
+								✕
+							</button>
+						</>
+					)}
+				</div>
+			)}
 		</div>
 	);
 }
