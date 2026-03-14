@@ -7,13 +7,6 @@ function formatTime(seconds: number): string {
 	return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-function buildRecordingFilename(): string {
-	const now = new Date();
-	const pad = (n: number) => String(n).padStart(2, "0");
-	const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-	const time = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
-	return `recording_${date}_${time}.webm`;
-}
 
 type Props = PlayerState & PlayerControls & MicrophoneState & MicrophoneControls;
 
@@ -170,23 +163,7 @@ export function ControlPanel({
 						</button>
 					)}
 					{recordingUrl && (
-						<>
-							<a
-								href={recordingUrl}
-								download={buildRecordingFilename()}
-								className="px-4 py-2 rounded-lg text-sm font-medium bg-green-700 hover:bg-green-600 text-white"
-							>
-								ダウンロード
-							</a>
-							<button
-								type="button"
-								onClick={clearRecording}
-								className="px-2 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-gray-700"
-								aria-label="録音を削除"
-							>
-								✕
-							</button>
-						</>
+						<span className="text-xs text-green-400">録音済み</span>
 					)}
 				</div>
 			)}

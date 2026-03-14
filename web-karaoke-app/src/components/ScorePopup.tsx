@@ -3,8 +3,19 @@ import type { PitchSample } from "../hooks/useScore";
 interface ScorePopupProps {
 	score: number;
 	pitchData: PitchSample[];
+	recordingUrl: string | null;
+	songTitle: string;
 	onRetry: () => void;
 	onHistory: () => void;
+}
+
+function buildRecordingFilename(title: string): string {
+	const now = new Date();
+	const pad = (n: number) => String(n).padStart(2, "0");
+	const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+	const time = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+	const safeName = title.replace(/[^\w\u3000-\u9FFF]/g, "_").slice(0, 30);
+	return `${safeName}_${date}_${time}.webm`;
 }
 
 const GRAPH_WIDTH = 480;
@@ -84,7 +95,7 @@ function PitchGraph({ pitchData }: { pitchData: PitchSample[] }) {
 	);
 }
 
-export function ScorePopup({ score, pitchData, onRetry, onHistory }: ScorePopupProps) {
+export function ScorePopup({ score, pitchData, recordingUrl, songTitle, onRetry, onHistory }: ScorePopupProps) {
 	return (
 		<div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
 			<div className="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-lg p-8 flex flex-col gap-6">
@@ -101,6 +112,17 @@ export function ScorePopup({ score, pitchData, onRetry, onHistory }: ScorePopupP
 					<p className="text-sm text-gray-400 mb-2">ピッチグラフ</p>
 					<PitchGraph pitchData={pitchData} />
 				</div>
+
+				{/* Recording download */}
+				{recordingUrl && (
+					<a
+						href={recordingUrl}
+						download={buildRecordingFilename(songTitle)}
+						className="w-full py-3 bg-green-700 hover:bg-green-600 text-white rounded-xl font-semibold text-center transition-colors"
+					>
+						録音をダウンロード
+					</a>
+				)}
 
 				{/* Buttons */}
 				<div className="flex gap-4">
