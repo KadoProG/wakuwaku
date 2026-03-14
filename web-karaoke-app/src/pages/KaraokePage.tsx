@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ControlPanel } from "../components/ControlPanel";
 import { LyricsDisplay } from "../components/LyricsDisplay";
 import { useLyricsSync } from "../hooks/useLyricsSync";
+import { useMicrophone } from "../hooks/useMicrophone";
 import { usePlayer } from "../hooks/usePlayer";
 import { getCurrentSong } from "../lib/songStore";
 
@@ -11,6 +12,7 @@ export function KaraokePage() {
 	const song = getCurrentSong();
 	const player = usePlayer(song?.audioFile ?? null);
 	const currentIndex = useLyricsSync(song?.lrcLines ?? [], player.currentTime);
+	const mic = useMicrophone();
 
 	useEffect(() => {
 		if (!song) {
@@ -44,7 +46,7 @@ export function KaraokePage() {
 
 			{/* Controls */}
 			<div className="flex justify-center px-4 pb-8">
-				<ControlPanel {...player} />
+				<ControlPanel {...player} {...mic} />
 			</div>
 		</div>
 	);
