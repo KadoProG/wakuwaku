@@ -7,9 +7,11 @@ interface Props {
 	keyData: KeyData;
 	state?: KeyState;
 	dragHandlers?: DragHandlers;
+	flatIndex: number;
+	swapping?: boolean;
 }
 
-export function KeyTile({ keyData, state = "default", dragHandlers }: Props) {
+export function KeyTile({ keyData, state = "default", dragHandlers, flatIndex, swapping }: Props) {
 	const base =
 		"flex items-center justify-center w-10 h-10 rounded border text-sm font-bold select-none transition-all duration-150";
 
@@ -20,10 +22,13 @@ export function KeyTile({ keyData, state = "default", dragHandlers }: Props) {
 		dragging: "bg-blue-200 border-blue-400 text-blue-800 opacity-40 cursor-grabbing",
 	};
 
+	const swapAnim = swapping && state !== "correct" ? "animate-swap-bounce" : "";
+
 	return (
 		<div
-			className={`${base} ${styles[state]}`}
+			className={`${base} ${styles[state]} ${swapAnim}`}
 			data-key={keyData.key}
+			data-index={flatIndex}
 			{...dragHandlers}
 		>
 			{keyData.key}

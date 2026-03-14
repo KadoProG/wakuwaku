@@ -8,6 +8,7 @@ interface Props {
 	draggingIndex: number | null;
 	rowOffset: number;
 	getDragHandlers: (flatIndex: number) => DragHandlers;
+	swappingSet: Set<number>;
 }
 
 export function KeyRow({
@@ -16,6 +17,7 @@ export function KeyRow({
 	draggingIndex,
 	rowOffset,
 	getDragHandlers,
+	swappingSet,
 }: Props) {
 	return (
 		<div className="flex gap-1 justify-center">
@@ -33,6 +35,8 @@ export function KeyRow({
 						keyData={keyData}
 						state={state}
 						dragHandlers={getDragHandlers(flatIndex)}
+						flatIndex={flatIndex}
+						swapping={swappingSet.has(flatIndex)}
 					/>
 				);
 			})}

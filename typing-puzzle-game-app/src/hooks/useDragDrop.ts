@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
 import type React from "react";
+import { useRef, useState } from "react";
 
 export interface DragHandlers {
 	draggable: true;
@@ -7,6 +7,9 @@ export interface DragHandlers {
 	onDragOver: (e: React.DragEvent) => void;
 	onDrop: (e: React.DragEvent) => void;
 	onDragEnd: (e: React.DragEvent) => void;
+	onTouchStart: (e: React.TouchEvent) => void;
+	onTouchEnd: (e: React.TouchEvent) => void;
+	onTouchCancel: () => void;
 }
 
 interface UseDragDropResult {
@@ -15,8 +18,8 @@ interface UseDragDropResult {
 }
 
 /**
- * Manages HTML5 drag-and-drop for keyboard tiles.
- * Calls `onSwap(sourceIndex, targetIndex)` when a valid drop occurs.
+ * Manages HTML5 drag-and-drop and touch events for keyboard tiles.
+ * Calls `onSwap(sourceIndex, targetIndex)` when a valid drop/touch occurs.
  */
 export function useDragDrop(
 	onSwap: (sourceIndex: number, targetIndex: number) => void,
@@ -43,6 +46,28 @@ export function useDragDrop(
 				setDraggingIndex(null);
 			},
 			onDragEnd: (_e: React.DragEvent) => {
+				dragSourceRef.current = null;
+				setDraggingIndex(null);
+			},
+			onTouchStart: (_e: React.TouchEvent) => {
+				dragSourceRef.current = flatIndex;
+				setDraggingIndex(flatIndex);
+			},
+			onTouchEnd: (e: React.TouchEvent) => {
+				const touch = e.changedTouches[0];
+				const el = document.elementFromPoint(touch.clientX, touch.clientY);
+				const target = el?.closest("[data-index]");
+				if (target) {
+					const targetIndex = Number(target.getAttribute("data-index"));
+					const source = dragSourceRef.current;
+					if (source !== null && source !== targetIndex) {
+						onSwap(source, targetIndex);
+					}
+				}
+				dragSourceRef.current = null;
+				setDraggingIndex(null);
+			},
+			onTouchCancel: () => {
 				dragSourceRef.current = null;
 				setDraggingIndex(null);
 			},
