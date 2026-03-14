@@ -1,56 +1,22 @@
-import { useMemo, useState } from "react";
 import { useDragDrop } from "../hooks/useDragDrop";
-import { type KeyData, QWERTY_ROWS, shuffle } from "../lib/keyboard";
+import { usePuzzle } from "../hooks/usePuzzle";
+import { QWERTY_ROWS } from "../lib/keyboard";
 import { KeyRow } from "./KeyRow";
 
 const ROW_SIZES = QWERTY_ROWS.map((row) => row.length); // [10, 9, 7]
 const ROW_LABELS = ["top", "middle", "bottom"] as const;
 
-function getRowSlices(keys: KeyData[]): KeyData[][] {
-	const slices: KeyData[][] = [];
-	let offset = 0;
-	for (const size of ROW_SIZES) {
-		slices.push(keys.slice(offset, offset + size));
-		offset += size;
-	}
-	return slices;
-}
-
-function computeCorrectSet(keys: KeyData[]): Set<number> {
-	const correct = new Set<number>();
-	let offset = 0;
-	for (let rowIndex = 0; rowIndex < ROW_SIZES.length; rowIndex++) {
-		const size = ROW_SIZES[rowIndex];
-		for (let col = 0; col < size; col++) {
-			const key = keys[offset + col];
-			if (key.row === rowIndex && key.correctIndex === col) {
-				correct.add(offset + col);
-			}
-		}
-		offset += size;
-	}
-	return correct;
-}
+const ROW_OFFSETS = ROW_SIZES.reduce<number[]>((acc, _size, i) => {
+	acc.push(i === 0 ? 0 : acc[i - 1] + ROW_SIZES[i - 1]);
+	return acc;
+}, []);
 
 export function Keyboard() {
-	const [keys, setKeys] = useState<KeyData[]>(() => shuffle("normal"));
+	const { keys, correctSet, isCleared, swap, reset } = usePuzzle("normal");
 
-	const correctSet = useMemo(() => computeCorrectSet(keys), [keys]);
-	const isCleared = correctSet.size === keys.length;
+	const rowSlices = ROW_SIZES.map((size, i) => keys.slice(ROW_OFFSETS[i], ROW_OFFSETS[i] + size));
 
-	const rowSlices = getRowSlices(keys);
-	const rowOffsets = ROW_SIZES.reduce<number[]>((acc, _size, i) => {
-		acc.push(i === 0 ? 0 : acc[i - 1] + ROW_SIZES[i - 1]);
-		return acc;
-	}, []);
-
-	const { draggingIndex, getDragHandlers } = useDragDrop((a, b) => {
-		setKeys((prev) => {
-			const next = [...prev];
-			[next[a], next[b]] = [next[b], next[a]];
-			return next;
-		});
-	});
+	const { draggingIndex, getDragHandlers } = useDragDrop(swap);
 
 	return (
 		<div className="flex flex-col items-center gap-4 p-6">
@@ -61,7 +27,7 @@ export function Keyboard() {
 						keys={rowKeys}
 						correctSet={correctSet}
 						draggingIndex={draggingIndex}
-						rowOffset={rowOffsets[rowIndex]}
+						rowOffset={ROW_OFFSETS[rowIndex]}
 						getDragHandlers={getDragHandlers}
 					/>
 				))}
@@ -74,7 +40,7 @@ export function Keyboard() {
 			<button
 				type="button"
 				className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors"
-				onClick={() => setKeys(shuffle("normal"))}
+				onClick={() => reset()}
 			>
 				Shuffle
 			</button>
