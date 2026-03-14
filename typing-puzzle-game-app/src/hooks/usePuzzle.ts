@@ -23,12 +23,14 @@ export interface UsePuzzleResult {
 	keys: KeyData[];
 	correctSet: Set<number>;
 	isCleared: boolean;
+	moves: number;
 	swap: (a: number, b: number) => void;
 	reset: (difficulty?: Difficulty) => void;
 }
 
 export function usePuzzle(initialDifficulty: Difficulty = "normal"): UsePuzzleResult {
 	const [keys, setKeys] = useState<KeyData[]>(() => shuffle(initialDifficulty));
+	const [moves, setMoves] = useState(0);
 
 	const correctSet = useMemo(() => computeCorrectSet(keys), [keys]);
 	const isCleared = correctSet.size === keys.length;
@@ -39,11 +41,13 @@ export function usePuzzle(initialDifficulty: Difficulty = "normal"): UsePuzzleRe
 			[next[a], next[b]] = [next[b], next[a]];
 			return next;
 		});
+		setMoves((prev) => prev + 1);
 	}
 
 	function reset(difficulty: Difficulty = initialDifficulty) {
 		setKeys(shuffle(difficulty));
+		setMoves(0);
 	}
 
-	return { keys, correctSet, isCleared, swap, reset };
+	return { keys, correctSet, isCleared, moves, swap, reset };
 }

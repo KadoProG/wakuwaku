@@ -162,9 +162,9 @@ tests/
 - [x] 全キー正位置でクリア状態へ遷移
 
 ### Step 6 — タイム・手数計測
-- [ ] `useTimer.ts` — ゲーム開始からの経過時間計測
-- [ ] swap 操作ごとに手数インクリメント
-- [ ] `score.ts` — localStorage にベストタイム・ベスト手数を保存・読み出し
+- [x] `useTimer.ts` — ゲーム開始からの経過時間計測
+- [x] swap 操作ごとに手数インクリメント
+- [x] `score.ts` — localStorage にベストタイム・ベスト手数を保存・読み出し
 
 ### Step 7 — UI・クリア演出
 - [ ] `StatusBar.tsx` — タイム・手数・ベスト記録の常時表示
