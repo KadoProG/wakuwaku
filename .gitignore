@@ -83,6 +83,10 @@ env/
 ENV/
 .venv
 
+# Claude
+.claude/settings.local.json
+**/settings.local.json
+
 # Misc
 *.zip
 *.tar.gz
