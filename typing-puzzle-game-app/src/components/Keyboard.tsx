@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useDragDrop } from "../hooks/useDragDrop";
 import { type KeyData, QWERTY_ROWS, shuffle } from "../lib/keyboard";
 import { KeyRow } from "./KeyRow";
 
@@ -43,6 +44,14 @@ export function Keyboard() {
 		return acc;
 	}, []);
 
+	const { draggingIndex, getDragHandlers } = useDragDrop((a, b) => {
+		setKeys((prev) => {
+			const next = [...prev];
+			[next[a], next[b]] = [next[b], next[a]];
+			return next;
+		});
+	});
+
 	return (
 		<div className="flex flex-col items-center gap-4 p-6">
 			<div className="flex flex-col gap-1">
@@ -51,8 +60,9 @@ export function Keyboard() {
 						key={ROW_LABELS[rowIndex]}
 						keys={rowKeys}
 						correctSet={correctSet}
-						draggingIndex={null}
+						draggingIndex={draggingIndex}
 						rowOffset={rowOffsets[rowIndex]}
+						getDragHandlers={getDragHandlers}
 					/>
 				))}
 			</div>

@@ -1,3 +1,4 @@
+import type { DragHandlers } from "../hooks/useDragDrop";
 import type { KeyData } from "../lib/keyboard";
 
 type KeyState = "default" | "correct" | "dragging";
@@ -5,9 +6,10 @@ type KeyState = "default" | "correct" | "dragging";
 interface Props {
 	keyData: KeyData;
 	state?: KeyState;
+	dragHandlers?: DragHandlers;
 }
 
-export function KeyTile({ keyData, state = "default" }: Props) {
+export function KeyTile({ keyData, state = "default", dragHandlers }: Props) {
 	const base =
 		"flex items-center justify-center w-10 h-10 rounded border text-sm font-bold select-none transition-all duration-150";
 
@@ -19,7 +21,11 @@ export function KeyTile({ keyData, state = "default" }: Props) {
 	};
 
 	return (
-		<div className={`${base} ${styles[state]}`} data-key={keyData.key}>
+		<div
+			className={`${base} ${styles[state]}`}
+			data-key={keyData.key}
+			{...dragHandlers}
+		>
 			{keyData.key}
 		</div>
 	);
