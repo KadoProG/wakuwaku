@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ControlPanel } from "../components/ControlPanel";
 import { LyricsDisplay } from "../components/LyricsDisplay";
+import { PitchDisplay } from "../components/PitchDisplay";
 import { ScorePopup } from "../components/ScorePopup";
 import { useLyricsSync } from "../hooks/useLyricsSync";
 import { useMicrophone } from "../hooks/useMicrophone";
@@ -60,13 +61,13 @@ export function KaraokePage() {
 	if (!song) return null;
 
 	return (
-		<div className="flex flex-col min-h-screen bg-gray-900 text-white">
+		<div className="flex flex-col h-screen bg-gray-900 text-white overflow-hidden">
 			{/* Header */}
-			<div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
+			<div className="flex items-center justify-between px-6 py-3 border-b border-gray-700 shrink-0">
 				<div>
-					<h1 className="text-xl font-bold">{song.title}</h1>
+					<h1 className="text-lg font-bold leading-tight">{song.title}</h1>
 					{song.artist && (
-						<p className="text-sm text-gray-400">{song.artist}</p>
+						<p className="text-xs text-gray-400">{song.artist}</p>
 					)}
 				</div>
 				<button
@@ -79,10 +80,22 @@ export function KaraokePage() {
 			</div>
 
 			{/* Lyrics */}
-			<LyricsDisplay lines={song.lrcLines} currentIndex={currentIndex} />
+			<div className="flex-1 min-h-0">
+				<LyricsDisplay lines={song.lrcLines} currentIndex={currentIndex} />
+			</div>
+
+			{/* Pitch Display */}
+			<div className="shrink-0">
+				<PitchDisplay
+					getAudioAnalyserNode={player.getAudioAnalyserNode}
+					getMicAnalyserNode={mic.getAnalyserNode}
+					isPlaying={player.isPlaying}
+					currentTime={player.currentTime}
+				/>
+			</div>
 
 			{/* Controls */}
-			<div className="flex justify-center px-4 pb-8">
+			<div className="flex justify-center px-4 py-4 shrink-0">
 				<ControlPanel {...player} {...mic} />
 			</div>
 
@@ -91,6 +104,8 @@ export function KaraokePage() {
 				<ScorePopup
 					score={score.score}
 					pitchData={score.pitchData}
+					recordingUrl={mic.recordingUrl}
+					songTitle={song.title}
 					onRetry={handleRetry}
 					onHistory={handleHistory}
 				/>

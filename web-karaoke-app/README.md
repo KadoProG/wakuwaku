@@ -37,6 +37,7 @@
 - **歌詞シンク表示** — 再生位置に合わせて現在行をハイライト・スクロール
 - **マイク入力** — getUserMedia でマイクを取得し、リアルタイムで音声処理
 - **採点** — ピッチ検出（autocorrelation）により歌唱音程と原曲音程を比較し、100点満点でスコアを算出
+- **歌唱録音** — マイク音声を WebM 形式で録音し、歌い終わった後にファイルをダウンロード
 
 ### エフェクト
 
@@ -251,7 +252,12 @@ tests/
 - [x] 日時・スコア・曲名でのソート切り替え
 - [x] 個別削除・全削除機能
 
-### Step 9 — エフェクト・キー/テンポ変更
+### Step 9 — 録音機能
+
+- [x] `useMicrophone` に `MediaRecorder` を使った録音機能を追加（`startRecording` / `stopRecording` / `clearRecording`）
+- [x] `ControlPanel` に録音 UI を追加（録音開始・停止・WebM ダウンロード）
+
+### Step 10 — エフェクト・キー/テンポ変更
 
 - [ ] ConvolverNode でリバーブ
 - [ ] AudioBufferSourceNode の `playbackRate` + `detune` でキー・テンポ変更

@@ -4,6 +4,8 @@ export interface MicrophoneState {
 	micEnabled: boolean;
 	micVolume: number;
 	echoStrength: number;
+	isRecording: boolean;
+	recordingUrl: string | null;
 }
 
 export interface MicrophoneControls {
@@ -11,20 +13,31 @@ export interface MicrophoneControls {
 	setMicVolume: (v: number) => void;
 	setEchoStrength: (v: number) => void;
 	getAnalyserNode: () => AnalyserNode | null;
+	startRecording: () => void;
+	stopRecording: () => void;
+	clearRecording: () => void;
 }
 
 export function useMicrophone(): MicrophoneState & MicrophoneControls {
 	const [micEnabled, setMicEnabled] = useState(false);
 	const [micVolume, setMicVolumeState] = useState(0.8);
 	const [echoStrength, setEchoStrengthState] = useState(0);
+	const [isRecording, setIsRecording] = useState(false);
+	const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
 
 	const audioCtxRef = useRef<AudioContext | null>(null);
 	const streamRef = useRef<MediaStream | null>(null);
 	const gainNodeRef = useRef<GainNode | null>(null);
 	const echoGainRef = useRef<GainNode | null>(null);
 	const analyserNodeRef = useRef<AnalyserNode | null>(null);
+	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+	const recordedChunksRef = useRef<Blob[]>([]);
 
 	const stopMic = useCallback(() => {
+		if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+			mediaRecorderRef.current.stop();
+			mediaRecorderRef.current = null;
+		}
 		if (streamRef.current) {
 			for (const track of streamRef.current.getTracks()) {
 				track.stop();
@@ -38,6 +51,7 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 		gainNodeRef.current = null;
 		echoGainRef.current = null;
 		analyserNodeRef.current = null;
+		setIsRecording(false);
 		setMicEnabled(false);
 	}, []);
 
@@ -117,10 +131,56 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 
 	const getAnalyserNode = useCallback(() => analyserNodeRef.current, []);
 
-	// アンマウント時にマイクを停止
+	const startRecording = useCallback(() => {
+		if (!streamRef.current || isRecording) return;
+		recordedChunksRef.current = [];
+		setRecordingUrl((prev) => {
+			if (prev) URL.revokeObjectURL(prev);
+			return null;
+		});
+
+		const recorder = new MediaRecorder(streamRef.current);
+		mediaRecorderRef.current = recorder;
+
+		recorder.ondataavailable = (e) => {
+			if (e.data.size > 0) {
+				recordedChunksRef.current.push(e.data);
+			}
+		};
+
+		recorder.onstop = () => {
+			const blob = new Blob(recordedChunksRef.current, { type: "audio/webm" });
+			const url = URL.createObjectURL(blob);
+			setRecordingUrl(url);
+			setIsRecording(false);
+		};
+
+		recorder.start();
+		setIsRecording(true);
+	}, [isRecording]);
+
+	const stopRecording = useCallback(() => {
+		if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+			mediaRecorderRef.current.stop();
+			mediaRecorderRef.current = null;
+		}
+	}, []);
+
+	const clearRecording = useCallback(() => {
+		setRecordingUrl((prev) => {
+			if (prev) URL.revokeObjectURL(prev);
+			return null;
+		});
+	}, []);
+
+	// アンマウント時にマイクを停止・URLを解放
 	useEffect(() => {
 		return () => {
 			stopMic();
+			setRecordingUrl((prev) => {
+				if (prev) URL.revokeObjectURL(prev);
+				return null;
+			});
 		};
 	}, [stopMic]);
 
@@ -128,9 +188,14 @@ export function useMicrophone(): MicrophoneState & MicrophoneControls {
 		micEnabled,
 		micVolume,
 		echoStrength,
+		isRecording,
+		recordingUrl,
 		toggleMic,
 		setMicVolume,
 		setEchoStrength,
 		getAnalyserNode,
+		startRecording,
+		stopRecording,
+		clearRecording,
 	};
 }
