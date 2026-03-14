@@ -234,9 +234,9 @@ tests/
 
 ### Step 6 — マイク入力
 
-- [ ] `useMicrophone` フックで `getUserMedia` を取得
-- [ ] GainNode でマイク音量調整
-- [ ] DelayNode でエコーエフェクト
+- [x] `useMicrophone` フックで `getUserMedia` を取得
+- [x] GainNode でマイク音量調整
+- [x] DelayNode でエコーエフェクト
 
 ### Step 7 — ピッチ検出・採点・結果保存
 
